@@ -1,67 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AstroApp API asassaTest</title>
+<script>
+  function loadAstroApp() {
+    const API_KEY = "Z5YtDsQbop2B8wII3TPsxQhZyaYS03Xprm72lKp2Fue7TJop3D";
+    let script = document.createElement("script");
+    script.src = `https://astroapp.com/astro/astroapi?key=${API_KEY}`;
+    script.onload = astroInit;
+    script.onerror = function () {
+      console.error("Failed to load AstroApp script.");
+      alert("AstroApp failed to load!");
+    };
+    document.head.appendChild(script);
+  }
 
-  <!-- Include AstroApp script -->
-  <script 
-    type="text/javascript" 
-    src="https://astroapp.com/astro/astroapi?key=Z5YtDsQbop2B8wII3TPsxQhZyaYS03Xprm72lKp2Fue7TJop3D"
-    defer
-    onload="astroInit()"
-    onerror="console.error('AstroApp script failed to load');">
-  </script>
-</head>
-<body>
-  <h1>AstroApp Basicasdas Example</h1>
-
-  <!-- Target div for the astrology chart -->
-  <div id="astroappDiv" style="width: 600px; height: 600px; border: 1px solid #ccc; margin-top: 20px;">
-    <p>Loading...</p>
-  </div>
-
-  <script>
-    function astroInit() {
-      if (typeof AstroApp === "undefined") {
-        console.error("AstroApp library not loaded.");
-        return;
-      }
-
-      console.log("✅ AstroApp Loaded Successfully!");
-
-      // 1) Create a new instance
-      var astroapp = new AstroApp();
-      astroapp.setTarget("astroappDiv");  // Set target div for chart rendering
-
-      // 2) Set up birth data, location, and time
-      astroapp.setLatitude("37N55");   // 37°55' North
-      astroapp.setLongitude("122W25"); // 122°25' West
-      astroapp.setHeight(0);           // Elevation in meters
-      astroapp.setDate("2025:02:14");  // YYYY:MM:DD
-      astroapp.setTime("12:00:00");    // HH:MM:SS (24-hour format)
-      astroapp.setTimeZone("-08:00");  // PST (example)
-
-      // 3) Choose House System & Zodiac
-      astroapp.setHouseSys(AstroApp.HOUSE_PLACIDUS);  // Example: Placidus
-      astroapp.setAyanamsa(AstroApp.NO_AYANAMSA);     // Tropical Zodiac
-
-      // 4) Request Data
-      astroapp.needImage();   // Generates the chart inside <div id="astroappDiv">
-      // astroapp.needObjects();  // Uncomment if you need planets' data
-      // astroapp.needAspects();  // Uncomment if you need aspects' data
-
-      // 5) Execute request
-      if (typeof astroRun !== "function") {
-        console.error("astroRun function is missing or undefined.");
-        return;
-      }
-
-      astroRun(astroapp, function(results) {
-        console.log("✅ AstroApp calculation completed!", results);
-      });
+  function astroInit() {
+    if (typeof AstroApp === "undefined") {
+      console.error("AstroApp failed to load.");
+      return;
     }
-  </script>
-</body>
-</html>
+
+    console.log("✅ AstroApp Loaded Successfully!");
+
+    var astroapp = new AstroApp();
+    astroapp.setTarget("astroappDiv");
+    astroapp.setLatitude("37N55");
+    astroapp.setLongitude("122W25");
+    astroapp.setDate("2025:02:14");
+    astroapp.setTime("12:00:00");
+    astroapp.setTimeZone("-08:00");
+    astroapp.needImage();
+
+    astroRun(astroapp, (results) => console.log("Results:", results));
+  }
+
+  loadAstroApp();
+</script>
