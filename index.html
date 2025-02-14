@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AstroApp API Test</title>
+  
+  <!-- Include the AstroApp script with your API key -->
+  <script type="text/javascript" src="http://astroapp.com/astro/astroapi?key=83QYlhZ4YXG39IZgp2FwkQ4ZOhiChLq9eJ400Y7CaWDtwp3D"></script>
+</head>
+<body>
+  <h1>AstroApp Basic Example</h1>
+  <!--
+    This div is where the AstroApp-generated chart image will be drawn if you call needImage().
+  -->
+  <div id="astroappDiv" 
+       style="width: 600px; height: 600px; border: 1px solid #ccc; margin-top: 20px;">
+  </div>
+
+  <script>
+    // 1) Create a new instance of the AstroApp class
+    var astroapp = new AstroApp();
+
+    // 2) Set up location, date/time, house system, etc.
+    astroapp.setLatitude("37N55");   // 37°55' North
+    astroapp.setLongitude("122W25"); // 122°25' West
+    astroapp.setHeight(0);          // Elevation in meters
+    astroapp.setDate("2025:02:14"); // YYYY:MM:DD
+    astroapp.setTime("12:00:00");   // HH:MM:SS (24-hour format)
+    astroapp.setTimeZone("-08:00"); // PST (example)
+    
+    // Optional: Choose your zodiac (tropical vs. sidereal)
+    // astroapp.setAyanamsa(AstroApp.NO_AYANAMSA);  // Default - Tropical
+    // astroapp.setAyanamsa(AstroApp.AYANAMSA_LAHIRI); // Sidereal Lahiri
+
+    // Optional: Set a house system, e.g. Whole Signs
+    // astroapp.setHouseSys(AstroApp.HOUSE_WHOLE_SIGN);
+
+    // 3) What do we need from AstroApp?
+    astroapp.needImage();    // This draws the wheel into <div id="astroappDiv">
+    // astroapp.needObjects();  // If you want to retrieve planets/house data
+    // astroapp.needAspects();  // If you want aspects data
+
+    // 4) Call astroRun
+    // If you asked for objects or aspects, you can supply a callback to process the XML
+    astroRun(astroapp, function(results) {
+      // Example code to parse some planet data from the XML if you had called needObjects().
+      // Remove or modify as desired.
+
+      // var pathLng  = "/calres/bodies/p/lng";
+      // var nodes = results.objectsXML.evaluate(pathLng, results.objectsXML, null, XPathResult.ANY_TYPE, null);
+      // var rslt = nodes.iterateNext();
+      // var sunLongitude = rslt.childNodes[AstroApp.PLANET_SUN].nodeValue;
+      // console.log("Sun Longitude: " + sunLongitude);
+    });
+  </script>
+</body>
+</html>
