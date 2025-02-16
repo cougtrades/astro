@@ -25,20 +25,26 @@ const PLANETARY_PICTURES = {
 
 // Function to fetch planetary positions from AstroApp API
 async function fetchPlanetaryPositions(date, time, location) {
-    const url = `https://astroapp.com/astro/apis/locations/name?cityName=${location}&key=${ASTROAPP_API_KEY}`;
-    const response = await fetch(url, { method: "GET", headers: { "Content-Type": "application/json" } });
-    const data = await response.json();
+    const corsProxy = "https://corsproxy.io/?"; // Free CORS proxy
+    const url = `https://astroapp.com/astro/apis/locations/name?cityName=${encodeURIComponent(location)}&key=${ASTROAPP_API_KEY}`;
 
-    if (!data || data.length === 0) {
-        throw new Error("Location not found.");
+    try {
+        const response = await fetch(corsProxy + url, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+        const data = await response.json();
+        console.log("API Response:", data);
+        return data;
+    } catch (error) {
+        console.error("Fetch error:", error);
+        return null;
     }
-
-    const { latitude, longitude, timezone } = data[0];
-
-    const chartUrl = `https://astroapp.com/astro/apis/chart?date=${date}&time=${time}&lat=${latitude}&lon=${longitude}&tz=${timezone}&key=${ASTROAPP_API_KEY}`;
-    const chartResponse = await fetch(chartUrl, { method: "GET", headers: { "Content-Type": "application/json" } });
-    return await chartResponse.json();
 }
+
 
 // Function to calculate all midpoints
 function calculateMidpoints(planets) {
