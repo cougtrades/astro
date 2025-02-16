@@ -1,11 +1,10 @@
 async function testAstroAppAPI() {
-    const url = "https://astroapp.com/astro/apis/locations/name?cityName=Richland%2C%20USA";
-    
+    const url = "https://astroapp.com/astro/apis/locations/name?cityName=Richland%2C%20USA&key=eDLHyTVQEwt0Loy7svz6qp2BAJ6wYnRhdTuphO21kDTckp3D";
+
     try {
         const response = await fetch(url, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer eDLHyTVQEwt0Loy7svz6qp2BAJ6wYnRhdTuphO21kDTckp3D`,
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
